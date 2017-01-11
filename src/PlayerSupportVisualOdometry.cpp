@@ -100,7 +100,7 @@ bool getTimestamp(string dir_timestamp,vector<ros::Time> &times)
     double stamp;
     if (!timestamps.is_open())
     {
-        ROS_ERROR_STREAM("Fail to open times.txt :" << timestamps);
+        ROS_ERROR_STREAM("Fail to open times.txt :" << str_support.c_str());
         return false;
     }
     while(timestamps >> stamp){
@@ -130,7 +130,7 @@ bool get_poses(string dir_root,string sequence,vector<Eigen::Matrix3d> &rotation
     string line;
     if(!input.good())
     {
-        ROS_ERROR_STREAM ( "Could not read file: " << infile );
+        ROS_ERROR_STREAM ( "Could not read file: " << infile.c_str());
         return false;
     }
     //Transform each Isometric matrix stored in the file into a rotation Matrix and a translation vector

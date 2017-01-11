@@ -16,6 +16,7 @@
 #include <ros/ros.h>
 #include <rosbag/bag.h>
 #include <rosgraph_msgs/Clock.h>
+#include <ros/console.h>
 
 #include <boost/filesystem.hpp>
 #include <boost/lambda/bind.hpp>
