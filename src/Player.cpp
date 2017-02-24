@@ -539,6 +539,8 @@ tf2::Transform Player::getOdomTfAt(unsigned int entry)
     if(!has_odom_origin_)
     {
         odom_origin_ = t;
+        // set origin orientation to 0
+        odom_origin_.setRotation(tf2::Quaternion(0,0,0,1));
         has_odom_origin_ = true;
     }
 
