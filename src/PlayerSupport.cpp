@@ -43,7 +43,7 @@ int getCamCalibration(string dir_root, string camera_name, double* K,std::vector
     if (!file_c2c.is_open())
         return false;
 
-    ROS_INFO_STREAM("Reading camera" << camera_name << " calibration from " << calib_cam_to_cam);
+    ROS_INFO_STREAM("Reading camera" << camera_name.c_str() << " calibration from " << calib_cam_to_cam.c_str());
 
     typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
     boost::char_separator<char> sep{" "};
@@ -62,7 +62,7 @@ int getCamCalibration(string dir_root, string camera_name, double* K,std::vector
         if (strcmp((*token_iterator).c_str(),((string)(string("K_")+camera_name+string(":"))).c_str())==0) //Calibration Matrix
         {
             index=0; //should be 9 at the end
-            ROS_DEBUG_STREAM("K_" << camera_name);
+            ROS_DEBUG_STREAM("K_" << camera_name.c_str());
             for (token_iterator++; token_iterator != tok.end(); token_iterator++)
             {
                 //std::cout << *token_iterator << '\n';
@@ -88,7 +88,7 @@ int getCamCalibration(string dir_root, string camera_name, double* K,std::vector
         if (strcmp((*token_iterator).c_str(),((string)(string("R_")+camera_name+string(":"))).c_str())==0) //Rectification Matrix
         {
             index=0; //should be 12 at the end
-            ROS_DEBUG_STREAM("R_" << camera_name);
+            ROS_DEBUG_STREAM("R_" << camera_name.c_str());
             for (token_iterator++; token_iterator != tok.end(); token_iterator++)
             {
                 //std::cout << *token_iterator << '\n';
@@ -100,7 +100,7 @@ int getCamCalibration(string dir_root, string camera_name, double* K,std::vector
         if (strcmp((*token_iterator).c_str(),((string)(string("P_rect_")+camera_name+string(":"))).c_str())==0) //Projection Matrix Rectified
         {
             index=0; //should be 12 at the end
-            ROS_DEBUG_STREAM("P_rect_" << camera_name);
+            ROS_DEBUG_STREAM("P_rect_" << camera_name.c_str());
             for (token_iterator++; token_iterator != tok.end(); token_iterator++)
             {
                 //std::cout << *token_iterator << '\n';
@@ -119,7 +119,7 @@ int getStaticTransform(string calib_filename, geometry_msgs::TransformStamped *r
     if (!calib_file.is_open())
         return false;
 
-    ROS_DEBUG_STREAM("Reading transformation" << (camera_name.empty()? string(""): string(" for camera ")+camera_name) << " from " << calib_filename);
+    ROS_DEBUG_STREAM("Reading transformation" << (camera_name.empty()? string(""): string(" for camera ")+camera_name) << " from " << calib_filename.c_str());
 
     typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
     boost::char_separator<char> sep{" "};
@@ -140,7 +140,7 @@ int getStaticTransform(string calib_filename, geometry_msgs::TransformStamped *r
         if (strcmp((*token_iterator).c_str(),((string)(string("T")+(camera_name.empty()?string(""):string("_")+camera_name)+string(":"))).c_str())==0) //Calibration Matrix
         {
             index=0; //should be 3 at the end
-            ROS_DEBUG_STREAM("T" << (camera_name.empty()?string(""):string("_")+camera_name));
+            ROS_DEBUG_STREAM("T" << (camera_name.empty()?string(""):string("_")).c_str() << camera_name.c_str());
             double T[3];
             for (token_iterator++; token_iterator != tok.end(); token_iterator++)
             {
@@ -168,7 +168,7 @@ int getStaticTransform(string calib_filename, geometry_msgs::TransformStamped *r
         if (strcmp((*token_iterator).c_str(),((string)(string("R")+(camera_name.empty()?string(""):string("_")+camera_name)+string(":"))).c_str())==0) //Rectification Matrix
         {
             index=0; //should be 9 at the end
-            ROS_DEBUG_STREAM("R" << (camera_name.empty()?string(""):string("_")+camera_name));
+            ROS_DEBUG_STREAM("R" << (camera_name.empty()?string(""):string("_")).c_str() << camera_name.c_str());
             double R[9];
             for (token_iterator++; token_iterator != tok.end(); token_iterator++)
             {
@@ -213,7 +213,7 @@ bool getTimestamp(string dir_timestamp, unsigned int entry_number, ros::Time &st
 	ifstream timestamps(str_support.c_str());
 	if (!timestamps.is_open())
 	{
-	    ROS_ERROR_STREAM("Fail to open " << timestamps);
+	    ROS_ERROR_STREAM("Fail to open " << str_support.c_str());
 	    return true;
 	}
 	timestamps.seekg(30*entry_number);
@@ -254,11 +254,11 @@ int getGPS(string filename, sensor_msgs::NavSatFix *ros_msgGpsFix, std_msgs::Hea
 {
     ifstream file_oxts(filename.c_str());
     if (!file_oxts.is_open()){
-        ROS_ERROR_STREAM("Fail to open " << filename);
+        ROS_ERROR_STREAM("Fail to open " << filename.c_str());
         return 0;
     }
 
-    ROS_DEBUG_STREAM("Reading GPS data from oxts file: " << filename );
+    ROS_DEBUG_STREAM("Reading GPS data from oxts file: " << filename.c_str() );
 
     typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
     boost::char_separator<char> sep{" "};
@@ -295,11 +295,11 @@ int getIMU(string filename, sensor_msgs::Imu *ros_msgImu, std_msgs::Header *head
     ifstream file_oxts(filename.c_str());
     if (!file_oxts.is_open())
     {
-        ROS_ERROR_STREAM("Fail to open " << filename);
+        ROS_ERROR_STREAM("Fail to open " << filename.c_str());
         return 0;
     }
 
-    ROS_DEBUG_STREAM("Reading IMU data from oxts file: " << filename );
+    ROS_DEBUG_STREAM("Reading IMU data from oxts file: " << filename.c_str() );
 
     typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
     boost::char_separator<char> sep{" "};
@@ -347,11 +347,11 @@ int getOdomTf(string filename, tf2::Transform *tf2_tf)
     ifstream file_oxts(filename.c_str());
     if (!file_oxts.is_open())
     {
-        ROS_ERROR_STREAM("Fail to open " << filename);
+        ROS_ERROR_STREAM("Fail to open " << filename.c_str());
         return 0;
     }
 
-    ROS_DEBUG_STREAM("Reading odom data from oxts file: " << filename );
+    ROS_DEBUG_STREAM("Reading odom data from oxts file: " << filename.c_str() );
 
     typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
     boost::char_separator<char> sep{" "};
